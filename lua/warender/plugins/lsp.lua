@@ -29,6 +29,7 @@ return {
             "jdtls",
             "pyright",
             "clangd",
+            "ts_ls",
           },
           handlers = {
             function(server_name)
