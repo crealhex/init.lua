@@ -20,7 +20,6 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
 
-  local noop = function() end
 	require("fidget").setup({})
 	require("mason").setup()
 	require("mason-lspconfig").setup({
@@ -37,7 +36,6 @@ return {
                 capabilities = capabilities,
               }
             end,
-            ['jdtls'] = noop,
             ["lua_ls"] = function()
               require("lspconfig").lua_ls.setup {
                 root_dir = function() return vim.fn.getcwd() end,
@@ -106,5 +104,8 @@ return {
           },
         })
         vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
+
+        -- Disable lspconfig's jdtls auto-enable; managed via ftplugin/java.lua
+        vim.lsp.enable('jdtls', false)
     end
 }
