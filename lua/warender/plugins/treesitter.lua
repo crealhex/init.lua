@@ -13,6 +13,7 @@ return {
       "markdown",
       "yaml",
       "kotlin",
+      "rust",
     })
   end
 }

@@ -29,6 +29,7 @@ return {
             "pyright",
             "clangd",
             "ts_ls",
+            "rust_analyzer",
           },
           handlers = {
             function(server_name)
