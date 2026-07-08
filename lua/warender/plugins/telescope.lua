@@ -17,7 +17,15 @@ return {
 
         local builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>pf', function()
-            builtin.find_files({ no_ignore = true, hidden = true, file_ignore_patterns = { "%.git/" } })
+            builtin.find_files({ no_ignore = true, hidden = true, file_ignore_patterns = {
+                "%.git/",
+                "node_modules/",
+                "target/",
+                "dist/",
+                "build/",
+                "%.venv/",
+                "__pycache__/",
+            } })
         end)
         vim.keymap.set('n', '<C-p>', builtin.git_files, {})
         vim.keymap.set('n', '<leader>pws', function()
