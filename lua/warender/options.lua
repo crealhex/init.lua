@@ -16,3 +16,15 @@ vim.opt.scrolloff = 10
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+vim.opt.clipboard = "unnamedplus" -- Sync yanks/pastes with the + register
+
+-- Force OSC 52 over the auto-detected tmux provider: tmux's load-buffer only
+-- fills the tmux buffer, while OSC 52 (with tmux set-clipboard on) reaches
+-- both the tmux buffer and the client terminal's system clipboard.
+local osc52 = require("vim.ui.clipboard.osc52")
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy  = { ["+"] = osc52.copy("+"),  ["*"] = osc52.copy("*") },
+  paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+}
