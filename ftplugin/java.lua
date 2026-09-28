@@ -68,6 +68,10 @@ end
 local config = {
   cmd = {
     jdtls_java,
+    -- Keep .project/.classpath/.settings in the jdtls workspace, not the
+    -- project root, so they never land in git or synced trees. jdtls only
+    -- reads this as a system property at startup, not from LSP settings
+    '-Djava.import.generatesMetadataFilesAtProjectRoot=false',
     '-javaagent:' .. lombok_path,
     '-jar', jdtls_launcher,
     '-configuration', vim.fs.normalize(jdtls_path .. '/' .. get_config_dir()),
