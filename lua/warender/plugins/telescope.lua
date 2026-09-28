@@ -25,6 +25,7 @@ return {
                 "build/",
                 "%.venv/",
                 "__pycache__/",
+                "%.class$",
             } })
         end)
         vim.keymap.set('n', '<C-p>', builtin.git_files, {})
