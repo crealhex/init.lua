@@ -81,3 +81,22 @@ local config = {
   settings = vscode_java_settings(root_dir),
 }
 require('jdtls').start_or_attach(config)
+
+-- Toggle between a class and its mirrored test (src/main/.../Foo.java <->
+-- src/test/.../FooTest.java), creating the test's package dirs if missing
+local function mirror(path)
+  if path:find('/src/main/') then
+    return (path:gsub('/src/main/', '/src/test/', 1):gsub('%.java$', 'Test.java'))
+  elseif path:find('/src/test/') then
+    return (path:gsub('/src/test/', '/src/main/', 1):gsub('Test%.java$', '.java'))
+  end
+end
+
+vim.keymap.set('n', '<leader>tm', function()
+  local target = mirror(vim.fn.expand('%:p'))
+  if not target then
+    return vim.notify('not under src/main or src/test', vim.log.levels.WARN)
+  end
+  vim.fn.mkdir(vim.fn.fnamemodify(target, ':h'), 'p')
+  vim.cmd.edit(vim.fn.fnameescape(target))
+end, { buffer = true, desc = 'Java: toggle class <-> mirrored test' })
