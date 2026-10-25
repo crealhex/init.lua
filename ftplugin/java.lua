@@ -65,6 +65,22 @@ local function vscode_java_settings(dir)
   return settings
 end
 
+-- jdtls only offers static-import completions from this list, and setting it
+-- replaces its JUnit-only default, so the JUnit entries are repeated here. A
+-- project's own .vscode value still wins
+local settings = vscode_java_settings(root_dir)
+settings.java = settings.java or {}
+settings.java.completion = settings.java.completion or {}
+settings.java.completion.favoriteStaticMembers = settings.java.completion.favoriteStaticMembers or {
+  'org.assertj.core.api.Assertions.*',
+  'org.junit.jupiter.api.Assertions.*',
+  'org.junit.jupiter.api.Assumptions.*',
+  'org.mockito.Mockito.*',
+  'org.mockito.ArgumentMatchers.*',
+  'org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*',
+  'org.springframework.test.web.servlet.result.MockMvcResultMatchers.*',
+}
+
 local config = {
   cmd = {
     jdtls_java,
@@ -78,7 +94,7 @@ local config = {
     '-data', vim.fn.expand('~/.cache/jdtls-workspace/') .. workspace_dir
   },
   root_dir = root_dir,
-  settings = vscode_java_settings(root_dir),
+  settings = settings,
 }
 require('jdtls').start_or_attach(config)
 
